@@ -10,7 +10,7 @@ setup(
 	version=version,
 	description="A focused ERD Viewer app for Frappe",
 	author="frappe-erd contributors",
-	author_email="",
+	author_email="maintainers@frappe-erd.dev",
 	packages=find_packages(),
 	zip_safe=False,
 	include_package_data=True,
