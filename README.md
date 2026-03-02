@@ -25,6 +25,12 @@ bench --site your-site install-app frappe_erd
 
 - App: `/frappe-erd`
 
+## Access Control
+
+- `frappe-erd` uses a dedicated role named `ERD Viewer`.
+- Assign this role to users who should access the ERD UI and APIs.
+- Users without `ERD Viewer` (or `System Manager`) cannot access ERD, and do not need direct `DocType` permission.
+
 ## API methods kept
 
 - `frappe_erd.api.erd_viewer.get_meta_erd_schema_for_doctypes`

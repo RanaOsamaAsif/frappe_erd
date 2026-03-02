@@ -5,7 +5,7 @@ import { Fragment, useEffect, useRef, useState } from "react"
 import { ErrorBanner } from "@/components/common/ErrorBanner/ErrorBanner"
 import { FullPageLoader } from "@/components/common/FullPageLoader/FullPageLoader"
 import { Input } from "@/components/ui/input"
-import { useFrappeGetDocList } from "frappe-react-sdk"
+import { useFrappeGetCall } from "frappe-react-sdk"
 import { DocType } from "@/types/Core/DocType"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useDebounce } from "@/hooks/useDebounce"
@@ -160,6 +160,10 @@ export interface DoctypesData {
     doctype_name: string
 }
 
+interface GetDoctypesResponse {
+    message: Pick<DocType, "name" | "module">[]
+}
+
 export const ModuleList = ({ doctype, setDocType }: { doctype: string[], setDocType: React.Dispatch<React.SetStateAction<string[]>> }) => {
 
     const [filter, setFilter] = useState<string>("")
@@ -167,11 +171,15 @@ export const ModuleList = ({ doctype, setDocType }: { doctype: string[], setDocT
     const debouncedInput = useDebounce(filter, 500)
 
 
-    const { data, error, isLoading } = useFrappeGetDocList<DocType>('DocType', {
-        fields: ['name', 'module'],
-        orFilters: [['module', 'like', `%${debouncedInput}%`], ['name', 'like', `%${debouncedInput}%`]],
-        limit: 100
-    })
+    const { data, error, isLoading } = useFrappeGetCall<GetDoctypesResponse>(
+        "frappe_erd.api.erd_viewer.get_doctypes",
+        {
+            search_text: debouncedInput,
+            limit: 100,
+        }
+    )
+
+    const doctypes = data?.message ?? []
     if (error) {
         return <ErrorBanner error={error} />
     }
@@ -192,7 +200,7 @@ export const ModuleList = ({ doctype, setDocType }: { doctype: string[], setDocT
                 <div>
                     <ul role="list" className="divide-y divide-gray-200">
                         {
-                            data?.map((doc: DocType) => {
+                            doctypes.map((doc) => {
                                 return (
                                     <li className="py-3 flex justify-between items-center pl-4" key={doc.name}>
                                         <label htmlFor={doc.name} className="text-sm font-normal" >{doc.name}</label>

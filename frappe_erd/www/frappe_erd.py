@@ -3,6 +3,7 @@ import re
 
 import frappe
 import frappe.sessions
+from frappe_erd.permissions import ensure_erd_access
 
 no_cache = 1
 
@@ -11,6 +12,7 @@ CLOSING_SCRIPT_TAG_PATTERN = re.compile(r"</script\>")
 
 
 def get_context(context):
+    ensure_erd_access()
     context = frappe._dict()
     context.boot = get_boot()
     context.build_version = frappe.utils.get_build_version()
@@ -19,6 +21,7 @@ def get_context(context):
 
 @frappe.whitelist(methods=['POST'], allow_guest=True)
 def get_context_for_dev():
+    ensure_erd_access()
     if not frappe.conf.developer_mode:
         frappe.throw('This method is only meant for developer mode')
     return json.loads(get_boot())
