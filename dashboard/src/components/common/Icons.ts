@@ -1,0 +1,48 @@
+import { ArrowUp01, Barcode, Calendar, CalendarClock, Check, Clock3, Code, FileCode, FileDigit, FileJson, Grid3x3, Heading, Heading1, Image, IndianRupee, LetterText, Lightbulb, Link, Link2, MapPinned, Menu, MousePointer2, PaintBucket, Paperclip, Parentheses, Pencil, PenOff, Percent, Phone, RectangleEllipsis, ScrollText, Signature, SquareStack, Star, Table, Timer, TypeOutline } from 'lucide-react'
+
+export type ICON_KEY = 'Autocomplete' | 'Attach' | 'Attach Image' | 'Barcode' | 'Button' | 'Check' | 'Code' | 'Color' | 'Currency' | 'Data' | 'Date' | 'Datetime' | 'Duration' | 'Dynamic Link' | 'Float' | 'Fold' | 'Geolocation' | 'Heading' | 'HTML' | 'HTML Editor' | 'Icon' | 'Image' | 'Int' | 'JSON' | 'Link' | 'Long Text' | 'Markdown Editor' | 'Password' | 'Percent' | 'Phone' | 'Read Only' | 'Rating' | 'Select' | 'Signature' | 'Small Text' | 'Table' | 'Table MultiSelect' | 'Text' | 'Text Editor' | 'Time'
+
+export const ICON_KEY_MAP: Record<ICON_KEY, any> = {
+    'Autocomplete': Lightbulb as any,
+    'Attach': Paperclip as any,
+    'Attach Image': Image as any,
+    'Barcode': Barcode as any,
+    'Button': Menu as any,
+    'Check': Check as any,
+    'Code': Code as any,
+    'Color': PaintBucket as any,
+    'Currency': IndianRupee as any,
+    'Data': TypeOutline as any,
+    'Date': Calendar as any,
+    'Datetime': CalendarClock as any,
+    'Duration': Timer as any,
+    'Dynamic Link': Link as any,
+    'Float': ArrowUp01 as any,
+    'Fold': Parentheses as any,
+    'Geolocation': MapPinned as any,
+    'Heading': Heading1 as any,
+    'HTML': Heading as any,
+    'HTML Editor': FileCode as any,
+    'Icon': SquareStack as any,
+    'Image': Image as any,
+    'Int': FileDigit as any,
+    'JSON': FileJson as any,
+    'Link': Link2 as any,
+    'Long Text': ScrollText as any,
+    'Markdown Editor': Heading1 as any,
+    'Password': RectangleEllipsis as any,
+    'Percent': Percent as any,
+    'Phone': Phone as any,
+    'Read Only': PenOff as any,
+    'Rating': Star as any,
+    'Select': MousePointer2 as any,
+    'Signature': Signature as any,
+    'Small Text': LetterText as any,
+    'Table': Table as any,
+    'Table MultiSelect': Grid3x3 as any,
+    'Text': LetterText as any,
+    'Text Editor': Pencil as any,
+    'Time': Clock3 as any,
+}
+
+

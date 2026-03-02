@@ -1,0 +1,16 @@
+{
+  "name": "frappe-erd",
+  "version": "1.1.0",
+  "description": "A focused ERD Viewer app for Frappe",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "cd dashboard && yarn dev",
+    "build": "cd dashboard && yarn build",
+    "postinstall": "yarn install-dashboard",
+    "install-dashboard": "cd dashboard && yarn install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": ""
+}

@@ -1,0 +1,10 @@
+[project]
+name = "frappe-erd"
+authors = [
+    { name = "frappe-erd contributors", email = ""}
+]
+description = "A focused ERD Viewer app for Frappe"
+requires-python = ">=3.10"
+readme = "README.md"
+dynamic = ["version"]
+dependencies = []

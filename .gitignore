@@ -1,0 +1,15 @@
+.DS_Store
+*.pyc
+*.egg-info
+*.swp
+tags
+node_modules
+
+commit/docs/current
+node_modules/
+
+commit/public/node_modules/
+commit/www/commit.html
+commit/www/commit-docs.html
+commit/public/commit
+commit/public/docs
