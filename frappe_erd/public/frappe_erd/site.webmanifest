@@ -1,6 +1,6 @@
 {
-    "name": "Raven",
-    "short_name": "Raven",
+    "name": "frappe-erd",
+    "short_name": "frappe-erd",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
@@ -13,7 +13,7 @@
             "type": "image/png"
         }
     ],
-    "theme_color": "#ffffff",
-    "background_color": "#ffffff",
+    "theme_color": "#0f172a",
+    "background_color": "#0f172a",
     "display": "standalone"
 }

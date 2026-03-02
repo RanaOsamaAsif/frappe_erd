@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="ERD">
+  <rect width="512" height="512" rx="96" fill="#0F172A"/>
+  <rect x="40" y="40" width="432" height="432" rx="76" fill="none" stroke="#22C55E" stroke-width="20"/>
+  <g fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-size="168" font-weight="700" text-anchor="middle">
+    <text x="256" y="315">ERD</text>
+  </g>
+</svg>
