@@ -17,13 +17,13 @@ A focused ERD Viewer app for the Frappe Framework.
 ## Install
 
 ```bash
-bench get-app https://github.com/RanaOsamaAsif/frappe-erd
+bench get-app https://github.com/RanaOsamaAsif/frappe_erd.git
 bench --site your-site install-app frappe_erd
 ```
 
 ## Route
 
-- App: `/frappe-erd`
+- App: `/erd-viewer`
 
 ## Access Control
 
