@@ -1,8 +1,8 @@
 from . import __version__ as app_version
 
 app_name = "frappe_erd"
-app_title = "frappe-erd"
-app_publisher = "frappe-erd contributors"
+app_title = "Frappe ERD"
+app_publisher = "Frappe ERD Contributors"
 app_description = "ERD Viewer for Frappe"
 app_email = ""
 app_license = "MIT"

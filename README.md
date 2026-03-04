@@ -1,4 +1,4 @@
-# frappe-erd
+# Frappe ERD
 
 A focused ERD Viewer app for the Frappe Framework.
 

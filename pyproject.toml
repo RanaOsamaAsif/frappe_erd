@@ -1,7 +1,7 @@
 [project]
 name = "frappe_erd"
 authors = [
-    { name = "frappe-erd contributors", email = "maintainers@frappe-erd.dev" }
+    { name = "Frappe ERD Contributors", email = "maintainers@frappe-erd.dev" }
 ]
 description = "A focused ERD Viewer app for Frappe"
 requires-python = ">=3.10"
