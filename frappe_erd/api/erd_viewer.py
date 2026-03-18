@@ -4,29 +4,57 @@ from frappe_erd.permissions import ensure_erd_access
 
 
 @frappe.whitelist()
-def get_doctypes(search_text: str = "", limit: int = 100):
+def get_doctype_modules():
+    """Get installed DocType modules for the ERD picker."""
+    ensure_erd_access()
+
+    modules = frappe.get_all(
+        "DocType",
+        fields=["module"],
+        filters=[
+            ["DocType", "issingle", "=", 0],
+            ["DocType", "is_virtual", "=", 0],
+            ["DocType", "module", "!=", ""],
+        ],
+        distinct=True,
+        order_by="module asc",
+        ignore_permissions=True,
+    )
+
+    return [module.module for module in modules if module.module]
+
+
+@frappe.whitelist()
+def get_doctypes(search_text: str = "", module: str | None = None, limit: int | None = None):
     """Get DocTypes for ERD selection, independent from DocType read permission."""
     ensure_erd_access()
 
-    limit = int(limit or 100)
-    limit = max(1, min(limit, 500))
     search_text = (search_text or "").strip()
+    module = (module or "").strip()
 
     filters = [
         ["DocType", "issingle", "=", 0],
         ["DocType", "is_virtual", "=", 0],
     ]
+    if module:
+        filters.append(["DocType", "module", "=", module])
+
     or_filters = None
     if search_text:
         like = f"%{search_text}%"
-        or_filters = [["DocType", "name", "like", like], ["DocType", "module", "like", like]]
+        or_filters = [["DocType", "name", "like", like]]
+
+    limit_page_length = 0
+    if limit is not None and str(limit).strip():
+        parsed_limit = int(limit)
+        limit_page_length = max(1, min(parsed_limit, 5000))
 
     return frappe.get_all(
         "DocType",
         fields=["name", "module"],
         filters=filters,
         or_filters=or_filters,
-        limit_page_length=limit,
+        limit_page_length=limit_page_length,
         order_by="module asc, name asc",
         ignore_permissions=True,
     )
