@@ -1,5 +1,6 @@
 import frappe
 from frappe_erd.frappe_erd.code_analysis.schema_builder import get_schema_from_doctypes_json
+from frappe_erd.frappe_erd.code_analysis.markdown_schema_export import build_markdown_schema_export
 from frappe_erd.permissions import ensure_erd_access
 
 
@@ -12,7 +13,6 @@ def get_doctype_modules():
         "DocType",
         fields=["module"],
         filters=[
-            ["DocType", "issingle", "=", 0],
             ["DocType", "is_virtual", "=", 0],
             ["DocType", "module", "!=", ""],
         ],
@@ -33,7 +33,6 @@ def get_doctypes(search_text: str = "", module: str | None = None, limit: int | 
     module = (module or "").strip()
 
     filters = [
-        ["DocType", "issingle", "=", 0],
         ["DocType", "is_virtual", "=", 0],
     ]
     if module:
@@ -82,3 +81,18 @@ def get_meta_for_doctype(doctype):
     """Get full metadata for a DocType."""
     ensure_erd_access()
     return frappe.get_meta(doctype)
+
+
+@frappe.whitelist()
+def export_markdown_schema_for_doctypes(doctypes: list, include_external_stubs: int | bool = 1):
+    """Export selected DocTypes as a Markdown schema guide for SQL and LLM use."""
+    ensure_erd_access()
+    return build_markdown_schema_export(doctypes, _coerce_bool(include_external_stubs))
+
+
+def _coerce_bool(value) -> bool:
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        return value.strip().lower() not in {"", "0", "false", "no"}
+    return bool(value)

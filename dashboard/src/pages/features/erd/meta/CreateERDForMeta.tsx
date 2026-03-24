@@ -5,7 +5,8 @@ import { Fragment, useEffect, useMemo, useRef, useState } from "react"
 import { ErrorBanner } from "@/components/common/ErrorBanner/ErrorBanner"
 import { FullPageLoader } from "@/components/common/FullPageLoader/FullPageLoader"
 import { Input } from "@/components/ui/input"
-import { useFrappeGetCall } from "frappe-react-sdk"
+import { toast } from "@/components/ui/use-toast"
+import { useFrappeGetCall, useFrappePostCall } from "frappe-react-sdk"
 import { DocType } from "@/types/Core/DocType"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useDebounce } from "@/hooks/useDebounce"
@@ -13,16 +14,24 @@ import { ERDForMetaDoctypes } from "./ERDForMetaDoctype"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { DoctypeListPopoverForMeta } from "./ERDDoctypeAndAppModal"
 import { toPng } from "html-to-image"
-import { Check, ChevronsUpDown, Download, X } from "lucide-react"
+import { Check, ChevronsUpDown, Download, FileText, X } from "lucide-react"
 import { Command, CommandEmpty, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 import { cn } from "@/lib/utils"
 
 const ERD_META_DOCTYPES_STORAGE_KEY = "ERDMetaDoctypes"
 const ERD_META_SELECTED_MODULE_STORAGE_KEY = "ERDMetaSelectedModule"
 
+interface MarkdownSchemaExportResponse {
+    filename: string
+    markdown: string
+}
+
 const CreateERD = () => {
     const [open, setOpen] = useState(true)
     const [erdDoctypes, setERDDocTypes] = useState<string[]>([])
+    const { call: exportMarkdown, loading: markdownExportLoading } = useFrappePostCall<{ message: MarkdownSchemaExportResponse }>(
+        "frappe_erd.api.erd_viewer.export_markdown_schema_for_doctypes"
+    )
 
     useEffect(() => {
         const doctypes = JSON.parse(window.sessionStorage.getItem(ERD_META_DOCTYPES_STORAGE_KEY) ?? "[]")
@@ -33,6 +42,46 @@ const CreateERD = () => {
     }, [])
 
     const flowRef = useRef(null)
+
+    const onExportMarkdown = async () => {
+        if (!erdDoctypes.length) {
+            toast({
+                title: "No DocTypes selected",
+                description: "Select at least one DocType before exporting Markdown.",
+                variant: "destructive",
+            })
+            return
+        }
+
+        try {
+            const response = await exportMarkdown({
+                doctypes: erdDoctypes,
+                include_external_stubs: 1,
+            })
+            const { filename, markdown } = response.message
+            const blob = new Blob([markdown], {
+                type: "text/markdown;charset=utf-8",
+            })
+            const url = window.URL.createObjectURL(blob)
+            const anchor = document.createElement("a")
+            anchor.setAttribute("download", filename)
+            anchor.setAttribute("href", url)
+            anchor.click()
+            window.URL.revokeObjectURL(url)
+
+            toast({
+                title: "Markdown exported",
+                description: filename,
+            })
+        } catch (error) {
+            const description = error instanceof Error ? error.message : "Unable to export the Markdown schema."
+            toast({
+                title: "Export failed",
+                description,
+                variant: "destructive",
+            })
+        }
+    }
 
     return (
         <div className="h-screen">
@@ -61,6 +110,12 @@ const CreateERD = () => {
                     >
                         <div className="flex items-center gap-2">
                             <Download size={14} /> Download
+                        </div>
+                    </Button>
+                    <Button variant="outline" onClick={onExportMarkdown} disabled={markdownExportLoading}>
+                        <div className="flex items-center gap-2">
+                            <FileText size={14} />
+                            {markdownExportLoading ? "Exporting..." : "Export Markdown"}
                         </div>
                     </Button>
                 </div>
@@ -133,7 +188,7 @@ export const ModuleDoctypeListDrawer = ({ open, setOpen, erdDoctypes, setERDDocT
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="relative mt-6 flex-1 min-h-0 px-4 sm:px-6">
+                                        <div className="relative mt-4 flex-1 min-h-0 px-4 sm:px-6">
                                             <ModuleList doctype={doctype} setDocType={setDocType} open={open} />
                                         </div>
                                         <div className="sticky bottom-0 flex items-center justify-end border-t bg-white p-4 text-3xl">
@@ -236,8 +291,8 @@ export const ModuleList = ({
     }
 
     return (
-        <div className="flex h-full min-h-0 flex-col gap-3 pb-4">
-            <div className="space-y-2">
+        <div className="flex h-full min-h-0 flex-col gap-2 pb-3">
+            <div className="space-y-1.5">
                 <div className="flex flex-wrap items-center gap-2">
                     <div className="min-w-[180px] flex-1">
                         <Input
@@ -292,9 +347,9 @@ export const ModuleList = ({
                         No modules are available for ERD selection.
                     </div>
                 ) : (
-                    <div className="space-y-2">
-                        <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
-                            <div className="flex flex-wrap items-center gap-2 text-sm">
+                    <>
+                        <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
+                            <div className="flex min-w-0 items-center gap-2">
                                 <Checkbox
                                     id="select-all-visible"
                                     checked={allVisibleSelected ? true : someVisibleSelected ? "indeterminate" : false}
@@ -310,59 +365,62 @@ export const ModuleList = ({
                                 <label htmlFor="select-all-visible" className="text-sm font-medium text-slate-700">
                                     Select all visible
                                 </label>
-                                <span className="text-xs text-slate-500">
-                                    {selectedVisibleCount} of {doctypes.length} selected{selectedModule ? ` in ${selectedModule}` : " in visible list"}
-                                </span>
-                                {doctype.length ? (
-                                    <Popover>
-                                        <PopoverTrigger asChild>
-                                            <Button type="button" variant="outline" size="sm" className="ml-auto h-8">
-                                                View selected
-                                            </Button>
-                                        </PopoverTrigger>
-                                        <DoctypeListPopoverForMeta doctypes={doctype} setDoctypes={setDocType} />
-                                    </Popover>
-                                ) : null}
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    size="sm"
-                                    className="h-8"
-                                    onClick={removeVisibleDoctypes}
-                                    disabled={!selectedVisibleCount}
-                                >
-                                    Unselect All Visible
-                                </Button>
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    size="sm"
-                                    className="h-8 border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
-                                    onClick={() => setDocType([])}
-                                    disabled={!doctype.length}
-                                >
-                                    Clear All Selections
-                                </Button>
                             </div>
+                            <span className="truncate">
+                                {selectedVisibleCount} of {doctypes.length} selected{selectedModule ? ` in ${selectedModule}` : " in visible list"}
+                            </span>
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-2">
+                            {doctype.length ? (
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <Button type="button" variant="outline" size="sm" className="h-7 px-2.5">
+                                            View selected
+                                        </Button>
+                                    </PopoverTrigger>
+                                    <DoctypeListPopoverForMeta doctypes={doctype} setDoctypes={setDocType} />
+                                </Popover>
+                            ) : null}
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                className="h-7 px-2.5"
+                                onClick={removeVisibleDoctypes}
+                                disabled={!selectedVisibleCount}
+                            >
+                                Unselect All Visible
+                            </Button>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                className="h-7 border-red-200 px-2.5 text-red-600 hover:bg-red-50 hover:text-red-700"
+                                onClick={() => setDocType([])}
+                                disabled={!doctype.length}
+                            >
+                                Clear All Selections
+                            </Button>
                         </div>
 
                         <div className="text-xs text-slate-500">
                             Showing {doctypes.length} DocType{doctypes.length === 1 ? "" : "s"}{selectedModule ? ` in ${selectedModule}` : ""}
                         </div>
-                    </div>
+                    </>
                 )}
             </div>
 
             {isLoading ? (
                 <FullPageLoader className="w-[240px]" />
             ) : (
-                <div className="min-h-0 flex-1 overflow-hidden rounded-lg border border-slate-200">
+                <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg border border-slate-200">
                     {doctypes.length ? (
-                        <ul role="list" className="h-full divide-y divide-gray-200 overflow-y-auto">
+                        <ul role="list" className="min-h-0 flex-1 divide-y divide-gray-200 overflow-y-auto">
                             {doctypes.map((doc) => {
                                 const isChecked = selectedDoctypeSet.has(doc.name)
                                 return (
-                                    <li className="flex items-center justify-between px-4 py-3" key={doc.name}>
+                                    <li className="flex items-center justify-between px-4 py-2.5" key={doc.name}>
                                         <div className="flex min-w-0 flex-col pr-4">
                                             <label htmlFor={doc.name} className="truncate text-sm font-medium text-slate-900">
                                                 {doc.name}

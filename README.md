@@ -8,6 +8,7 @@ A focused ERD Viewer app for the Frappe Framework.
 - Visualize table relationships and field structures
 - Inspect DocType metadata in a side drawer
 - Export the ERD view as an image
+- Export selected DocType schemas as a Markdown guide for SQL and LLM prompts
 
 ## Tech
 
@@ -35,6 +36,7 @@ bench --site your-site install-app frappe_erd
 
 - `frappe_erd.api.erd_viewer.get_meta_erd_schema_for_doctypes`
 - `frappe_erd.api.erd_viewer.get_meta_for_doctype`
+- `frappe_erd.api.erd_viewer.export_markdown_schema_for_doctypes`
 
 ## Credits and Attribution
 
