@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-03-26
+
+- Added a new DocType impact report in the ERD drawer to surface reverse links, child-table usage, child tables, customizations, automations, reports, and direct runtime hooks for the selected DocType.
+- Added the `frappe_erd.api.erd_viewer.get_doctype_impact_report` API and typed frontend payloads for the new impact-report flow.
+- Kept the v1 report intentionally focused by excluding duplicate permissions output, code-reference scanning, and layout-only customizations such as section and column breaks.
+- Added backend tests for the impact-report aggregation helpers and API behavior.
+- Updated the browser tab title to `ERD Viewer`.
+- Rebuilt frontend assets and refreshed published HTML entrypoints for the latest UI updates.
+
 ## 2026-03-24
 
 - Added Markdown schema export for selected DocTypes to support SQL and LLM-assisted querying.

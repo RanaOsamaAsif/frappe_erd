@@ -11,6 +11,8 @@ import { DocPerm } from '@/types/Core/DocPerm'
 import { LinkTable } from './LinkTable/LinkTable'
 import { DocTypeLink } from '@/types/Core/DocTypeLink'
 import { FullPageLoader } from '@/components/common/FullPageLoader/FullPageLoader'
+import { ImpactReport } from './ImpactReport/ImpactReport'
+import { useEffect, useState } from 'react'
 
 
 export interface Props {
@@ -24,11 +26,26 @@ export interface DocTypeResponse {
 }
 
 export const MetaTableDrawer = ({ doctype, isOpen, onClose }: Props) => {
+    const [activeTab, setActiveTab] = useState("fields")
+    const [impactEnabled, setImpactEnabled] = useState(false)
 
 
     const { data, error, isLoading } = useFrappeGetCall<{ message: DocType }>('frappe_erd.api.erd_viewer.get_meta_for_doctype', { doctype }, doctype ? undefined : null)
 
     const doctypeMeta = data?.message
+
+    useEffect(() => {
+        setActiveTab("fields")
+        setImpactEnabled(false)
+    }, [doctype])
+
+    const onTabChange = (value: string) => {
+        setActiveTab(value)
+        if (value === "impact") {
+            setImpactEnabled(true)
+        }
+    }
+
     return (
         <div
             data-state={isOpen ? 'open' : 'closed'}
@@ -99,16 +116,20 @@ export const MetaTableDrawer = ({ doctype, isOpen, onClose }: Props) => {
                     </div>
                 </div>
                 <div className="px-2 sm:px-2">
-                    <Tabs defaultValue="fields" className="w-full">
+                    <Tabs value={activeTab} onValueChange={onTabChange} className="w-full">
                         <TabsList className='w-full justify-start'>
                             <TabsTrigger value="fields">Fields</TabsTrigger>
                             <TabsTrigger value="permissions">Permissions</TabsTrigger>
                             <TabsTrigger value="links">Link</TabsTrigger>
+                            <TabsTrigger value="impact">Impact</TabsTrigger>
 
                         </TabsList>
                         <TabsContent value="fields"><FieldsTable data={doctypeMeta.fields ?? [] as DocField[]} /></TabsContent>
                         <TabsContent value="permissions"><PermissionsTable permissions={doctypeMeta.permissions ?? [] as DocPerm[]} /> </TabsContent>
                         <TabsContent value="links"><LinkTable links={doctypeMeta.links ?? [] as DocTypeLink[]} /></TabsContent>
+                        <TabsContent value="impact" forceMount hidden={activeTab !== "impact"}>
+                            <ImpactReport doctype={doctypeMeta.name} enabled={impactEnabled} />
+                        </TabsContent>
                     </Tabs>
                 </div>
             </div>}

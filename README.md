@@ -7,6 +7,7 @@ A focused ERD Viewer app for the Frappe Framework.
 - Build an ERD from selected Frappe DocTypes
 - Visualize table relationships and field structures
 - Inspect DocType metadata in a side drawer
+- Review a focused impact report for a DocType, including reverse links, child-table usage, customizations, automations, and direct runtime hooks
 - Export the ERD view as an image
 - Export selected DocType schemas as a Markdown guide for SQL and LLM prompts
 
@@ -36,6 +37,7 @@ bench --site your-site install-app frappe_erd
 
 - `frappe_erd.api.erd_viewer.get_meta_erd_schema_for_doctypes`
 - `frappe_erd.api.erd_viewer.get_meta_for_doctype`
+- `frappe_erd.api.erd_viewer.get_doctype_impact_report`
 - `frappe_erd.api.erd_viewer.export_markdown_schema_for_doctypes`
 
 ## Credits and Attribution

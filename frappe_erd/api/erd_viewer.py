@@ -1,6 +1,7 @@
 import frappe
 from frappe_erd.frappe_erd.code_analysis.schema_builder import get_schema_from_doctypes_json
 from frappe_erd.frappe_erd.code_analysis.markdown_schema_export import build_markdown_schema_export
+from frappe_erd.frappe_erd.code_analysis.impact_report import build_doctype_impact_report
 from frappe_erd.permissions import ensure_erd_access
 
 
@@ -88,6 +89,13 @@ def export_markdown_schema_for_doctypes(doctypes: list, include_external_stubs: 
     """Export selected DocTypes as a Markdown schema guide for SQL and LLM use."""
     ensure_erd_access()
     return build_markdown_schema_export(doctypes, _coerce_bool(include_external_stubs))
+
+
+@frappe.whitelist()
+def get_doctype_impact_report(doctype: str):
+    """Return a DocType impact report for the current site."""
+    ensure_erd_access()
+    return build_doctype_impact_report(doctype)
 
 
 def _coerce_bool(value) -> bool:
