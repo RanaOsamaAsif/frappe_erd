@@ -5,6 +5,8 @@
 ![platform](https://img.shields.io/badge/platform-macOS%2015.6%2B-grey)
 ![status](https://img.shields.io/badge/status-actively%20maintained-brightgreen)
 
+![Frappe ERD demo](./frappe_erd_demo.png)
+
 A focused ERD Viewer app for the Frappe Framework.
 
 ## What it does
