@@ -4,25 +4,25 @@
 [![license](https://img.shields.io/badge/license-AGPL--3.0-orange)](./LICENSE)
 ![status](https://img.shields.io/badge/status-actively%20maintained-brightgreen)
 
-<table>
-  <tr>
-    <td align="center">
-      <img src="./Screenshot%202026-03-30%20at%2012.30.12%E2%80%AFPM.png" alt="ERD graph view" />
-      <br />
-      <sub>ERD graph</sub>
-    </td>
-    <td align="center">
-      <img src="./Screenshot%202026-03-30%20at%2012.30.30%E2%80%AFPM.png" alt="Impact report view" />
-      <br />
-      <sub>Impact report</sub>
-    </td>
-    <td align="center">
-      <img src="./Screenshot%202026-03-30%20at%2012.30.53%E2%80%AFPM.png" alt="DocType detail drawer view" />
-      <br />
-      <sub>DocType details</sub>
-    </td>
-  </tr>
-</table>
+## Feature Preview
+
+<p align="center">
+  <img src="./Screenshot%202026-03-30%20at%2012.30.12%E2%80%AFPM.png" alt="ERD graph view" width="100%" />
+  <br />
+  <sub>ERD graph</sub>
+</p>
+
+<p align="center">
+  <img src="./Screenshot%202026-03-30%20at%2012.30.30%E2%80%AFPM.png" alt="Impact report view" width="100%" />
+  <br />
+  <sub>Impact report</sub>
+</p>
+
+<p align="center">
+  <img src="./Screenshot%202026-03-30%20at%2012.30.53%E2%80%AFPM.png" alt="DocType detail drawer view" width="100%" />
+  <br />
+  <sub>DocType details</sub>
+</p>
 
 A focused ERD Viewer app for the Frappe Framework.
 
