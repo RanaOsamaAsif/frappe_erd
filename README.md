@@ -2,7 +2,6 @@
 
 [![release](https://img.shields.io/github/v/release/RanaOsamaAsif/frappe_erd?label=release)](https://github.com/RanaOsamaAsif/frappe_erd/releases)
 [![license](https://img.shields.io/badge/license-AGPL--3.0-orange)](./LICENSE)
-![platform](https://img.shields.io/badge/platform-macOS%2015.6%2B-grey)
 ![status](https://img.shields.io/badge/status-actively%20maintained-brightgreen)
 
 ![Frappe ERD demo](./frappe_erd_demo.png)
