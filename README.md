@@ -4,7 +4,25 @@
 [![license](https://img.shields.io/badge/license-AGPL--3.0-orange)](./LICENSE)
 ![status](https://img.shields.io/badge/status-actively%20maintained-brightgreen)
 
-![Frappe ERD demo](./frappe_erd_demo.png)
+<table>
+  <tr>
+    <td align="center">
+      <img src="./Screenshot%202026-03-30%20at%2012.30.12%E2%80%AFPM.png" alt="ERD graph view" />
+      <br />
+      <sub>ERD graph</sub>
+    </td>
+    <td align="center">
+      <img src="./Screenshot%202026-03-30%20at%2012.30.30%E2%80%AFPM.png" alt="Impact report view" />
+      <br />
+      <sub>Impact report</sub>
+    </td>
+    <td align="center">
+      <img src="./Screenshot%202026-03-30%20at%2012.30.53%E2%80%AFPM.png" alt="DocType detail drawer view" />
+      <br />
+      <sub>DocType details</sub>
+    </td>
+  </tr>
+</table>
 
 A focused ERD Viewer app for the Frappe Framework.
 
