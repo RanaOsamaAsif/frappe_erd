@@ -4,7 +4,7 @@ authors = [
     { name = "Frappe ERD Contributors", email = "maintainers@frappe-erd.dev" }
 ]
 description = "A focused ERD Viewer app for Frappe"
-requires-python = ">=3.10"
+requires-python = ">=3.14"
 readme = "README.md"
 dynamic = ["version"]
 dependencies = []

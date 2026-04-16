@@ -13,3 +13,4 @@ website_route_rules = [
 ]
 
 after_install = "frappe_erd.install.after_install"
+
